@@ -166,7 +166,7 @@ export default {
 
 <style>
   .custom-button {
-    margin-right: 10px; /* Ajusta el valor del margen según tus necesidades */
+    margin-right: 10px; 
   }
   .op{
     color: rgb(255, 45, 45);
