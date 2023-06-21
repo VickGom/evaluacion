@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArchivoTable extends Migration
+class CreateFamiliasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateArchivoTable extends Migration
      */
     public function up()
     {
-        Schema::create('archivos', function (Blueprint $table) {
+        Schema::create('familias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('prospecto_id')->constrained('prospectos');
-            $table->string('nombre');
-            $table->string('ruta');
-            $table->timestamps();
+            $table->integer('numeroClase');
+            $table->integer('numeroFamilia');
+            $table->string('nombreFamilia');
         });
     }
 
@@ -29,6 +28,6 @@ class CreateArchivoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('archivo');
+        Schema::dropIfExists('familias');
     }
 }

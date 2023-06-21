@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProspectoController;
+use App\Http\Controllers\ArticuloController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,22 +16,27 @@ Route::get('/', function () {
     return view('inicio');
 });
 
-Route::get('/capturar', function () {
-    return view('capturar_prospecto');
+Route::get('/articulo', function () {
+    return view('articulo');
 });
 
+Route::get('/agregar-articulo', function () {
+    return view('agregar');
+});
 
-Route::post('/prospectos-agregar', [ProspectoController::class, 'store']);
+Route::get('/buscar/{sku}', [ArticuloController::class, 'buscarSku']);
 
-Route::get('/prospectos-obtener', [ProspectoController::class, 'index']);
+Route::get('/mostrar/{sku}', [ArticuloController::class, 'mostrarArticulo']);
 
-Route::get('/informacion/{id}', [ProspectoController::class, 'informacion']);
+Route::get('/mostrar-clase/{departamento}', [ArticuloController::class, 'obtenerClase']);
 
-Route::get('/evaluar/{id}', [ProspectoController::class, 'evaluar']);
+Route::get('/mostrar-familia/{clase}', [ArticuloController::class, 'obtenerFamilia']);
 
-Route::get('/informacion/informacion-obtener/{id}', [ProspectoController::class, 'obtenerInformacion']);
+Route::put('/modificar', [ArticuloController::class, 'modificar']);
 
-Route::get('/download/{filename}', [ProspectoController::class, 'download']);
+Route::get('/mostrar-departamento', [ArticuloController::class, 'obtenerDepartamento']);
 
-Route::post('/cambiar-status', [ProspectoController::class, 'cambiarStatus']);
+Route::post('/agregar', [ArticuloController::class, 'agregar']);
+
+Route::delete('/eliminar/{sku}', [ArticuloController::class, 'eliminar']);
 
