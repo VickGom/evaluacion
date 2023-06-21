@@ -27,16 +27,22 @@ class ArticuloController extends Controller
 
         $articulo = Articulo::where('sku', $sku)->first();
         $departamento = Departamento::where('id', $articulo->departamento)->first();
+        $departamento = Departamento::where('id', $articulo->departamento)->first();
         $departamentos = Departamento::All();
-        $clase = Clase::where('numeroDepartamento', $articulo->clase)->first();
+        $clase = Clase::where('id', $articulo->clase)->first();
         $familia = Familia::where('id', $articulo->familia)->first();
+        $clases = Clase::where('numeroDepartamento', $articulo->clase)->get();
+        $familias = Familia::where('numeroClase', $clase->numeroClase)->get();
+        
         
         if ($articulo) {
             return response()->json(['articulo' => $articulo,
                                      'departamento' => $departamento,
                                      'departamentos' => $departamentos,
                                      'clase' => $clase,
-                                     'familia' => $familia]);
+                                     'familia' => $familia,
+                                     'clases' => $clases,
+                                     'familias' => $familias]);
         } else {
             return response()->json(['error' => 'Artículo no encontrado'], 404);
         }
@@ -54,8 +60,9 @@ class ArticuloController extends Controller
 
     }
     public function obtenerFamilia($clase){
-        
-        $familia = Familia::where('numeroClase', $clase)->get();
+        $claseId = Clase::where('id', $clase)->first();
+        $familia = Familia::where('numeroClase', $claseId->numeroClase)->get();
+
 
         if ($clase) {
             return response()->json(['familias' => $familia]);
@@ -83,7 +90,7 @@ class ArticuloController extends Controller
         $selectedClase = $request->input('selectedClase');
 
         $articulo = Articulo::find($request->id);
-
+        $claseId = Clase::where('id', $selectedClase)->first();
         if (!$articulo) {
             return  response()->json(['error' => 'articulo no encontrado'], 402);
         }
@@ -93,7 +100,7 @@ class ArticuloController extends Controller
         $articulo->marca = $request->marca;
         $articulo->modelo = $request->modelo;
         $articulo->departamento = $selectedDepartamento ?? $request->departamento;
-        $articulo->clase = $selectedClase ?? $request->clase;
+        $articulo->clase = $claseId->id;
         $articulo->familia = $selectedFamilia ?? $request->familia;
         $articulo->stock = $request->stock;
         $articulo->cantidad = $request->cantidad;
@@ -150,7 +157,16 @@ class ArticuloController extends Controller
             return response()->json(['error' => 'No se pudo eliminar el articulo'], 404);
         }
 
+    }
 
+    public function mostrarTodo(){
+        $articulo = Articulo::All();
+        
+        if ($articulo) {
+            return response()->json(['articulo' => $articulo]);
+        } else {
+            return response()->json(['error' => 'Artículo no encontrado'], 404);
+        }
 
     }
 }

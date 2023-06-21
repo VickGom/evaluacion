@@ -7,7 +7,7 @@
         </div>
         <div class="form-group">
             <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="descontinuado" v-model="articulos.descontinuado"/>
+            <input type="checkbox" class="form-check-input" id="descontinuado" checked v-model="check"/>
             <label class="form-check-label" for="descontinuado">Descontinuado</label>
             </div>
         </div>
@@ -34,16 +34,16 @@
         </div>
         <div class="form-group">
             <label for="modelo">Clase</label>
-            <select class="form-control" v-model="selectedClase"  :disabled="esDisabled" @change="obtenerFamilia">
+            <select class="form-control" v-model="selectedClase" @change="obtenerFamilia">
                 <option :value="null">{{ clase }}</option>
-                <option v-for="clase in clases" :value="clase.numeroClase" :key="clase.numeroClase">
+                <option v-for="clase in clases" :value="clase.id" :key="clase.id">
                     {{ clase.nombreClase }}
                 </option>
             </select>
         </div>
         <div class="form-group">
             <label for="modelo">Familia</label>
-            <select class="form-control" v-model="selectedFamilia" :disabled="esDisabledF">
+            <select class="form-control" v-model="selectedFamilia" >
                 <option :value="null">{{ familia }}</option>
                 <option v-for="familia in familias" :value="familia.id" :key="familia.id">
                     {{ familia.nombreFamilia }}
@@ -133,6 +133,7 @@ export default {
             showModalV: false,
             showModalF: false,
             showModalE: false,
+            check: false,
             errors: [],
         };
     },
@@ -226,8 +227,15 @@ export default {
                 this.articulos = response.data.articulo
                 this.departamento = response.data.departamento.nombreDepartamento
                 this.departamentos = response.data.departamentos
+                this.clases = response.data.clases
+                this.familias = response.data.familias
                 this.clase = response.data.clase.nombreClase
                 this.familia = response.data.familia.nombreFamilia
+                if (response.data.articulo.descontinuado == 1) {
+                    this.check = true;
+                }
+                
+
             } 
             })
             .catch(error => {

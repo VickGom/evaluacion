@@ -1,23 +1,62 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center vh-100">
-      <div class="card">
-        <div class="card-body">
-            <div class="form-group">
-              <label for="name">Sku:</label>
-              <input type="number" v-model="sku" id="sku" name="sku" class="form-control" placeholder="Ingrese el Sku">
-            </div>
-            <div class="error-message" v-if="errors.length > 0">
-              <ul>
-                <li v-for="error in errors" :key="error">{{ error }}</li>
-              </ul>
-            </div>
-            <div class="form-group text-center mt-3">
-              <button @click="buscar" class="btn btn-primary">Buscar</button>
-            </div>
+  <div class="container-custom">
+    <div class="container d-flex justify-content-center align-items-center vh-100 mt-5">
+        <div class="card">
+          <div class="card-body">
+              <div class="form-group">
+                <label for="name">Sku:</label>
+                <input type="number" v-model="sku" id="sku" name="sku" class="form-control" placeholder="Ingrese el Sku">
+              </div>
+              <div class="error-message" v-if="errors.length > 0">
+                <ul>
+                  <li v-for="error in errors" :key="error">{{ error }}</li>
+                </ul>
+              </div>
+              <div class="form-group text-center mt-3">
+                <button @click="buscar" class="btn btn-primary">Buscar</button>
+              </div>
+          </div>
         </div>
-      </div>
-  </div>
+    </div>
 
+    <div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Sku</th>
+            <th>Artículo</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Departamento</th>
+            <th>Clase</th>
+            <th>Familia</th>
+            <th>Stock</th>
+            <th>Cantidad</th>
+            <th>Descontinuado</th>
+            <th>Fecha de Alta</th>
+            <th>Fecha Baja</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="articulo in articulos" :key="articulo.id">
+            <td>{{ articulo.sku }}</td>
+            <td>{{ articulo.articulo }}</td>
+            <td>{{ articulo.marca }}</td>
+            <td>{{ articulo.modelo }}</td>
+            <td>{{ articulo.departamento }}</td>
+            <td>{{ articulo.clase }}</td>
+            <td>{{ articulo.familia }}</td>
+            <td>{{ articulo.stock }}</td>
+            <td>{{ articulo.cantidad }}</td>
+            <td v-if="articulo.descontinuado == 1">Si</td>
+            <td v-else>No</td>
+            <td>{{ articulo.fechaDeAlta }}</td>
+            <td>{{ articulo.fechaBaja }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+ </div>
   <div v-if="showModalV" class="modal">
       <div class="modal-content">
         <h3>Sku encontrado</h3>
@@ -46,6 +85,23 @@ export default {
           showModalV: false,
           showModalF: false,
           errors: [],
+          articulos:[
+            {
+              id: null,
+              sku: null,
+              articulo: null,
+              marca: null,
+              modelo: null,
+              departamento: null,
+              clase: null,
+              familia: null,
+              stock: null,
+              cantidad: null,
+              descontinuado: null,
+              fechaDeAlta: null,
+              fechaBaja: null
+            }
+          ],
         };
     },
     methods: {
@@ -85,7 +141,17 @@ export default {
     },
 
     mounted() {
-          
+      axios.get(`/mostrar-todo`)
+            .then(response => {
+            if (response) {
+                this.articulos = response.data.articulo
+                console.log(this.articulos);
+                
+
+            } 
+            })
+            .catch(error => {
+        });
     },
 }
 </script>
@@ -117,4 +183,8 @@ export default {
     right: 10px;
     cursor: pointer;
   }
+  .container-custom {
+    margin-top: -200px; 
+  }
+
 </style>

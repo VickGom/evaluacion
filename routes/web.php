@@ -36,6 +36,8 @@ Route::put('/modificar', [ArticuloController::class, 'modificar']);
 
 Route::get('/mostrar-departamento', [ArticuloController::class, 'obtenerDepartamento']);
 
+Route::get('/mostrar-todo', [ArticuloController::class, 'mostrarTodo']);
+
 Route::post('/agregar', [ArticuloController::class, 'agregar']);
 
 Route::delete('/eliminar/{sku}', [ArticuloController::class, 'eliminar']);
